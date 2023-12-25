@@ -46,8 +46,10 @@ class ProjectSettings:
         self.env_file = env_file
         self.env_file_encoding = env_file_encoding
 
-        self.postgres_main_settings = PostgresMainSettings(_env_file=self.env_file, _env_file_encoding=self.env_file_encoding)
-        self.postgres_test_settings = PostgresTestSettings(_env_file=self.env_file, _env_file_encoding=self.env_file_encoding)
+        self.postgres_main_settings = PostgresMainSettings(_env_file=self.env_file,
+                                                           _env_file_encoding=self.env_file_encoding)
+        self.postgres_test_settings = PostgresTestSettings(_env_file=self.env_file,
+                                                           _env_file_encoding=self.env_file_encoding)
         self.uvicorn_settings = UvicornSettings(_env_file=self.env_file, _env_file_encoding=self.env_file_encoding)
 
 
