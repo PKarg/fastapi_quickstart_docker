@@ -4,7 +4,7 @@ from sqlalchemy import select
 from sqlalchemy.orm import Session
 
 from schemas.user import (UserCreateSchema, UserFilterSchema, UserCreateSchemaHashed)
-from .base import CRUDBase
+from crud.base import CRUDBase
 from models.users import User
 
 

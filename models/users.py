@@ -4,13 +4,13 @@ from email_validator import validate_email, EmailNotValidError
 
 from db.setup import Base
 
-from annotations import int_pk
-from model_utils import TimestampMixin, TableNameMixin
+from models.annotations import int_pk
+from models.model_utils import TimestampMixin, TableNameMixin
 from models.common_validators import common_string_validator
 
 
 class User(Base, TableNameMixin, TimestampMixin):
-    user_id: int_pk
+    user_id: Mapped[int_pk]
     username: Mapped[str] = mapped_column(String(length=255), nullable=True)
     email_address: Mapped[str] = mapped_column(String(length=255), nullable=False)
     language_code: Mapped[str] = mapped_column(String(length=8), nullable=False)

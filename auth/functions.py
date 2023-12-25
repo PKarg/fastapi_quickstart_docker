@@ -55,9 +55,10 @@ def create_access_token(username: str, user_id: int, expire_days: Optional[int] 
     if expire_days:
         expire = datetime.datetime.utcnow() + datetime.timedelta(days=expire_days)
     else:
-        expire = datetime.datetime.utcnow() + datetime.timedelta(days=project_settings.main_settings.token_expire_days)
+        expire = datetime.datetime.utcnow() + datetime.timedelta(
+            days=project_settings.main_settings.auth_token_expire_days)
     data_to_encode.update({"exp": expire})
-    return jwt.encode(data_to_encode, project_settings.main_settings.auth_secret_key,
+    return jwt.encode(data_to_encode, project_settings.main_settings.auth_secret_key.get_secret_value(),
                       algorithm=project_settings.main_settings.auth_algorithm)
 
 

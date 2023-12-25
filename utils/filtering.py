@@ -6,7 +6,7 @@ from typing import List, Optional
 from pydantic import BaseModel, Extra
 from sqlalchemy import func, Select, inspect
 
-from database.db import Base, get_model_registry
+from db.setup import Base, get_model_registry
 
 
 class Operator(object):

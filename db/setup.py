@@ -8,11 +8,11 @@ from sqlalchemy import URL, create_engine
 
 db_url = URL.create(
     drivername="postgresql+psycopg2",
-    username=project_settings.main_db_settings.main_db_user,
-    password=project_settings.main_db_settings.main_db_password,
-    host=project_settings.main_db_settings.main_db_host,
-    port=project_settings.main_db_settings.main_db_port,
-    database=project_settings.main_db_settings.main_db_name,
+    username=project_settings.postgres_main_settings.postgres_main_user,
+    password=project_settings.postgres_main_settings.postgres_main_password,
+    host=project_settings.postgres_main_settings.postgres_main_host,
+    port=project_settings.postgres_main_settings.postgres_main_port,
+    database=project_settings.postgres_main_settings.postgres_main_db,
 )
 
 engine = create_engine(db_url, echo=True)
