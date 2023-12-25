@@ -5,12 +5,6 @@ from pydantic import ConfigDict, Field, SecretStr
 from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
-# TODO implement general config using pydantic BaseSettings class that will include
-#  - database connection string
-#  - api server info
-#  - logging settings
-
-
 class PostgresMainSettings(BaseSettings):
     model_config = ConfigDict(extra="ignore")
 
@@ -34,11 +28,16 @@ class PostgresTestSettings(BaseSettings):
     postgres_test_db: str = Field("testdb")
 
 
-class UvicornSettings(BaseSettings):
+class MainSettings(BaseSettings):
     model_config = ConfigDict(extra="ignore")
 
     uvicorn_host: str = Field("localhost")
     uvicorn_port: int = Field(8001)
+    docs_username: str = Field("admin")
+    docs_password: SecretStr
+    auth_secret_key: SecretStr
+    auth_algorithm: str = Field("HS256")
+    auth_token_expire_days: int = Field(1)
 
 
 class ProjectSettings:
@@ -50,7 +49,7 @@ class ProjectSettings:
                                                            _env_file_encoding=self.env_file_encoding)
         self.postgres_test_settings = PostgresTestSettings(_env_file=self.env_file,
                                                            _env_file_encoding=self.env_file_encoding)
-        self.uvicorn_settings = UvicornSettings(_env_file=self.env_file, _env_file_encoding=self.env_file_encoding)
+        self.main_settings = MainSettings(_env_file=self.env_file, _env_file_encoding=self.env_file_encoding)
 
 
 def get_project_settings():
