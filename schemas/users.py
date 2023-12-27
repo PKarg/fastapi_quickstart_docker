@@ -15,6 +15,7 @@ class UserBaseSchema(BaseModel):
     status: Optional[int] = Field(0, description="User status.", ge=0, le=2)
     auth_level: Optional[int] = Field(0, description="User authorization level.", ge=0, le=2)
     identifier: Optional[str] = Field(None, description="User unique identifier.", max_length=12)
+    language_code: str = Field("en", description="User language code.", max_length=8)
 
     @field_validator("email_address")
     def validate_player_mail(cls, v: str) -> str | None:

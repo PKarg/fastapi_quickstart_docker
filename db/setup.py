@@ -9,7 +9,7 @@ from sqlalchemy import URL, create_engine
 db_url = URL.create(
     drivername="postgresql+psycopg2",
     username=project_settings.postgres_main_settings.postgres_main_user,
-    password=project_settings.postgres_main_settings.postgres_main_password,
+    password=project_settings.postgres_main_settings.postgres_main_password.get_secret_value(),
     host=project_settings.postgres_main_settings.postgres_main_host,
     port=project_settings.postgres_main_settings.postgres_main_port,
     database=project_settings.postgres_main_settings.postgres_main_db,

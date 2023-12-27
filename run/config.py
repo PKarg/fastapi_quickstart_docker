@@ -53,12 +53,14 @@ class ProjectSettings:
 
 
 def get_project_settings():
+    root_dir = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     logging.info("Loading project settings")
 
     environment = os.environ.get("ENVIRONMENT", "dev")
     logging.info(f"Loading settings for environment: {environment}")
 
-    env_file: str = "../.env.prod" if environment == "prod" else "../.env.dev"
+    env_file: str = ".env.prod" if environment == "prod" else ".env.dev"
+    env_file = os.path.join(root_dir, env_file)
     logging.info(f"Loading settings from file: {env_file}")
 
     return ProjectSettings(env_file=env_file, env_file_encoding="utf-8")

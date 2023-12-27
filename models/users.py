@@ -20,7 +20,7 @@ class User(Base, TableNameMixin, TimestampMixin):
     identifier: Mapped[str] = mapped_column(String(12), nullable=False, unique=True)
 
     __table_args__ = (
-        CheckConstraint("length(name) > 5", name="name_at_least_5_chars"),
+        CheckConstraint("length(username) > 5", name="name_at_least_5_chars"),
         CheckConstraint("status in (0, 1, 2)", name="status_in_range"),
         CheckConstraint("auth_level in (0, 1, 2)", name="auth_level_in_range"),
     )

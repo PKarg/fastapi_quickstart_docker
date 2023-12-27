@@ -1,7 +1,7 @@
 import pytest
 from datetime import datetime
 from pydantic import ValidationError
-from schemas.user import UserBaseSchema, UserCreateSchema, UserCreateSchemaHashed, UserFilterSchema
+from schemas.users import UserBaseSchema, UserCreateSchema, UserCreateSchemaHashed, UserFilterSchema
 
 
 def test_user_base_schema():

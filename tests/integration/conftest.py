@@ -8,14 +8,13 @@ from run.config import project_settings
 test_db_url = URL.create(
     drivername="postgresql+psycopg2",
     username=project_settings.postgres_test_settings.postgres_test_user,
-    password=project_settings.postgres_test_settings.postgres_test_password,
+    password=project_settings.postgres_test_settings.postgres_test_password.get_secret_value(),
     host=project_settings.postgres_test_settings.postgres_test_host,
     port=project_settings.postgres_test_settings.postgres_test_port,
     database=project_settings.postgres_test_settings.postgres_test_db,
 )
 
 test_engine: Engine = create_engine(test_db_url,
-                                    connect_args={"check_same_thread": False},
                                     echo=True)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
 

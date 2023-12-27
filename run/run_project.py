@@ -13,5 +13,5 @@ if __name__ == "__main__":
                 host=project_settings.main_settings.uvicorn_host,
                 port=project_settings.main_settings.uvicorn_port,
                 reload=True,
-                reload_dirs=["../routers", "../models",
-                             "../utils", "../db", "../crud", "../main.py"])
+                reload_dirs=["routers", "models",
+                             "utils", "db", "crud", "main.py"])
