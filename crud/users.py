@@ -1,3 +1,5 @@
+import hashlib
+import datetime
 from typing import List
 
 from sqlalchemy import select
@@ -6,6 +8,10 @@ from sqlalchemy.orm import Session
 from schemas.users import (UserCreateSchema, UserFilterSchema, UserCreateSchemaHashed)
 from crud.base import CRUDBase
 from models.users import User
+
+
+def create_user_identifier() -> str:
+    return hashlib.md5(str(datetime.datetime.now()).encode()).hexdigest()[:12]
 
 
 class UserCrud(CRUDBase):
@@ -21,8 +27,8 @@ class UserCrud(CRUDBase):
                                     validation_schema=validation_schema,
                                     limit=limit, offset=offset)
 
-    def create_user(self, db: Session, user_data: UserCreateSchema,
-                    user_identifier: str, hashed_password: str):
+    def create_user(self, db: Session, user_data: UserCreateSchema, hashed_password: str):
+        user_identifier = create_user_identifier()
         obj_in = UserCreateSchemaHashed(hashed_password=hashed_password,
                                         **user_data.model_dump())
 

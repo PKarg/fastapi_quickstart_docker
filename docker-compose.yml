@@ -1,0 +1,15 @@
+version: '3.8'
+
+services:
+  db_main:
+    image: postgres
+    env_file:
+      - ./environment/.env.dev
+    ports:
+      - "5434:5434"
+  db_test:
+    image: postgres
+    env_file:
+      - ./environment/.env.test
+    ports:
+      - "5435:5435"

@@ -16,7 +16,7 @@ def get_test_hashed_password():
 
 @pytest.mark.parametrize("username, email_address, hashed_password, identifier",
                          [
-                             ("testuser", "test@test.com", get_test_hashed_password(), get_player_id_hash()),
+                             ("testuser", "dev@dev.com", get_test_hashed_password(), get_player_id_hash()),
                          ])
 def test_player_model(username, email_address, hashed_password, identifier):
     user = User(username=username, email_address=email_address, hashed_password=hashed_password, identifier=identifier)

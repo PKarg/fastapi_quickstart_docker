@@ -44,4 +44,4 @@ def optional(model: BaseModel, fields: Optional[list] = None):
 
 def test_make_optional():
     OptionalTestModel = optional(TestModel)
-    ot = OptionalTestModel(id=-1, name='test', age=None)
+    ot = OptionalTestModel(id=-1, name='dev', age=None)

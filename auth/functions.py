@@ -1,5 +1,4 @@
 import datetime
-import hashlib
 import secrets
 from typing import Optional, List
 
@@ -25,10 +24,6 @@ oauth2_scheme = OAuth2PasswordBearer(tokenUrl="users/auth/token")
 
 def get_password_hash(password: str) -> str:
     return bcrypt_context.hash(password)
-
-
-def create_user_identifier() -> str:
-    return hashlib.md5(str(datetime.datetime.now()).encode()).hexdigest()[:12]
 
 
 def verify_password(plain_password: str, hashed_password: str) -> bool:

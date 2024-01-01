@@ -8,9 +8,9 @@ from pydantic import BaseModel, field_validator, model_validator, Field, ConfigD
 # TODO user updating should be implemented separately
 
 class UserBaseSchema(BaseModel):
-    name: str = Field(description="User username.", max_length=30, min_length=5)
+    username: str = Field(description="User username.", max_length=30, min_length=5)
     email_address: Optional[str] = Field(None, max_length=50)
-    time_added: Optional[datetime.datetime] = Field(datetime.datetime.now(),
+    created_at: Optional[datetime.datetime] = Field(datetime.datetime.now(),
                                                     description="Time when player was added to the database.")
     status: Optional[int] = Field(0, description="User status.", ge=0, le=2)
     auth_level: Optional[int] = Field(0, description="User authorization level.", ge=0, le=2)

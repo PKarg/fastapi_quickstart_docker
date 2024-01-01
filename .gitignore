@@ -35,7 +35,7 @@ MANIFEST
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
+# Unit dev / coverage reports
 htmlcov/
 .tox/
 .nox/
@@ -157,7 +157,13 @@ cython_debug/
 #  and can be added to the global gitignore or merged into this file.  For a more nuclear
 #  option (not recommended) you can uncomment the following to ignore the entire idea folder.
 #.idea/
-/.env.dev
-/.env.prod
-/.env.dev
+/environment/.env.dev
+/environment/.env.prod
+/environment/.env.dev
 /tests/.env.dev
+/environment/prod/.env.postgres.prod
+/environment/prod/.env.postgres.prod
+/environment/dev/
+/environment/prod/
+/environment/.env.test
+/environment/.env.test
