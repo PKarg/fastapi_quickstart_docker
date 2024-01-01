@@ -34,7 +34,7 @@ def check_docs_access(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = secrets.compare_digest(credentials.username,
                                               project_settings.main_settings.docs_username)
     correct_password = secrets.compare_digest(credentials.password,
-                                              project_settings.main_settings.docs_password)
+                                              project_settings.main_settings.docs_password.get_secret_value())
 
     if not (correct_username and correct_password):
         raise HTTPException(

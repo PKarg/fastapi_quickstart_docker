@@ -3,7 +3,7 @@ import logging
 from inspect import signature
 from typing import List, Optional
 
-from pydantic import BaseModel, Extra
+from pydantic import BaseModel, ConfigDict
 from sqlalchemy import func, Select, inspect
 
 from db.setup import Base, get_model_registry
@@ -57,8 +57,7 @@ def get_field_from_model(model: Base, field: str):
 
 
 class BaseFilterSchema(BaseModel):
-    class Config:
-        extra = Extra.ignore
+    model_config = ConfigDict(extra="ignore")
 
 
 class FilterJsonSchema(BaseModel):
