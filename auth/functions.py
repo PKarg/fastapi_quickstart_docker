@@ -32,9 +32,9 @@ def verify_password(plain_password: str, hashed_password: str) -> bool:
 
 def check_docs_access(credentials: HTTPBasicCredentials = Depends(security)):
     correct_username = secrets.compare_digest(credentials.username,
-                                              project_settings.main_settings.docs_username)
+                                              project_settings.main.docs_username)
     correct_password = secrets.compare_digest(credentials.password,
-                                              project_settings.main_settings.docs_password.get_secret_value())
+                                              project_settings.main.docs_password.get_secret_value())
 
     if not (correct_username and correct_password):
         raise HTTPException(
@@ -51,14 +51,14 @@ def create_access_token(username: str, user_id: int, expire_days: Optional[int] 
         expire = datetime.datetime.utcnow() + datetime.timedelta(days=expire_days)
     else:
         expire = datetime.datetime.utcnow() + datetime.timedelta(
-            days=project_settings.main_settings.auth_token_expire_days)
+            days=project_settings.main.auth_token_expire_days)
     data_to_encode.update({"exp": expire})
-    return jwt.encode(data_to_encode, project_settings.main_settings.auth_secret_key.get_secret_value(),
-                      algorithm=project_settings.main_settings.auth_algorithm)
+    return jwt.encode(data_to_encode, project_settings.main.auth_secret_key.get_secret_value(),
+                      algorithm=project_settings.main.auth_algorithm)
 
 
 def authenticate_user(username: str, password: str, db: Session) -> User | bool:
-    u: List[User] = user_crud.get_filtered_by(db=db, name=username)
+    u: List[User] = user_crud.get_filtered_by(db=db, username=username)
     user: User = u[0] if u else None
     if not user:
         return False
@@ -80,8 +80,8 @@ def get_current_active_user(token: Annotated[str, Depends(oauth2_scheme)],
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, project_settings.main_settings.auth_secret_key,
-                             project_settings.main_settings.auth_algorithm)
+        payload = jwt.decode(token, project_settings.main.auth_secret_key,
+                             project_settings.main.auth_algorithm)
         username: str = payload.get("sub")
         id: int = payload.get("id")
         if not username or not id:

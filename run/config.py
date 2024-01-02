@@ -27,14 +27,24 @@ class MainSettings(BaseSettings):
     auth_token_expire_days: int = Field(1)
 
 
+class QueueSettings(BaseSettings):
+    model_config = ConfigDict(extra="ignore")
+
+    redis_host: str = Field("localhost")
+    redis_password: SecretStr
+    redis_port: int = Field(6379)
+    redis_db: int = Field(0)
+
+
 class ProjectSettings:
     def __init__(self, env_file: str, env_file_encoding: str):
         self.env_file = env_file
         self.env_file_encoding = env_file_encoding
 
-        self.postgres_settings = PostgresSettings(_env_file=self.env_file,
-                                                  _env_file_encoding=self.env_file_encoding)
-        self.main_settings = MainSettings(_env_file=self.env_file, _env_file_encoding=self.env_file_encoding)
+        self.postgres = PostgresSettings(_env_file=self.env_file,
+                                         _env_file_encoding=self.env_file_encoding)
+        self.redis = QueueSettings(_env_file=self.env_file, _env_file_encoding=self.env_file_encoding)
+        self.main = MainSettings(_env_file=self.env_file, _env_file_encoding=self.env_file_encoding)
 
 
 def get_project_settings():

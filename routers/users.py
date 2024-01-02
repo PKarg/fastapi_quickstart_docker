@@ -25,19 +25,18 @@ async def login_for_access_token(form_data: OAuth2PasswordRequestForm = Depends(
     if not user:
         raise HTTPException(status_code=401, detail="Incorrect username or password")
     access_token = create_access_token(username=user.username, user_id=user.user_id,
-                                       expire_days=project_settings.token_expire_days)
+                                       expire_days=project_settings.main.auth_token_expire_days)
     return {"access_token": access_token}
 
 
 @user_router.post("", status_code=status.HTTP_201_CREATED)
 async def create_new_user(user_data: UserCreateSchema, db: Session = Depends(get_db),
                           username: str = Depends(check_docs_access)):
-    user = user_crud.get_filtered_by(db=db, name=user_data.name)
+    user = user_crud.get_filtered_by(db=db, username=user_data.username)
     if user:
         raise HTTPException(status_code=400, detail="Player already exists")
     else:
-        user_id = create_user_identifier()
         hashed_password = get_password_hash(user_data.raw_password)
         user = user_crud.create_user(db=db, user_data=user_data,
-                                     user_identifier=user_id, hashed_password=hashed_password)
+                                     hashed_password=hashed_password)
     return user
