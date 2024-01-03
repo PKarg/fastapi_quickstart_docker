@@ -17,6 +17,22 @@ services:
       - ./environment/.env.dev
     ports:
       - "6379:6379"
+  celery:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file:
+      - ./environment/.env.dev
+    environment:
+      - REDIS_HOST=redis_main
+    command: celery -A celery_tasks.worker worker --loglevel=info && celery -A celery_tasks.worker flower --port=5001
+    volumes:
+      - .:/app
+    ports:
+      - "5001:5001"
+    depends_on:
+      - db_main
+      - redis_main
 
   db_test:
     image: postgres

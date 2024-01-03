@@ -4,6 +4,7 @@ from sqlalchemy.orm import sessionmaker, Session
 from starlette.testclient import TestClient
 
 from auth.functions import get_password_hash
+from celery_tasks.worker import add
 from crud.users import user_crud
 from db.setup import Base, get_db
 from main import app
@@ -22,6 +23,21 @@ test_db_url = URL.create(
 test_engine: Engine = create_engine(test_db_url,
                                     echo=True)
 TestingSessionLocal = sessionmaker(autocommit=False, autoflush=False, bind=test_engine)
+
+
+@pytest.fixture(scope="session")
+def celery_register_tasks(celery_session_app):
+    celery_session_app.register_task(add)
+
+
+@pytest.fixture(scope="session")
+def celery_config():
+    return {
+        "broker_url": f'redis://:{project_settings.redis.redis_password.get_secret_value()}@{project_settings.redis.redis_host}:'
+                      f'{project_settings.redis.redis_port}/{project_settings.redis.redis_db}',
+        "result_backend": f'redis://:{project_settings.redis.redis_password.get_secret_value()}@{project_settings.redis.redis_host}:'
+                          f'{project_settings.redis.redis_port}/{project_settings.redis.redis_db}'
+    }
 
 
 @event.listens_for(test_engine, "connect")
