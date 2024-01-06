@@ -1,1 +1,1 @@
-from celery_tasks.shared_tasks import add_three
+import celery_tasks.shared_tasks

@@ -14,7 +14,5 @@ def add(x, y):
     return x + y
 
 
-app.autodiscover_tasks(force=True, related_name="shared_tasks")
-
 if __name__ == "__main__":
     pass
