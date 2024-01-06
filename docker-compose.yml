@@ -25,7 +25,35 @@ services:
       - ./environment/.env.dev
     environment:
       - REDIS_HOST=redis_main
-    command: celery -A celery_tasks.worker worker --loglevel=info && celery -A celery_tasks.worker flower --port=5001
+    command: celery -A celery_tasks.worker worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - db_main
+      - redis_main
+  celery_2:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file:
+      - ./environment/.env.dev
+    environment:
+      - REDIS_HOST=redis_main
+    command: celery -A celery_tasks.worker2 worker --loglevel=info
+    volumes:
+      - .:/app
+    depends_on:
+      - db_main
+      - redis_main
+  flower:
+    build:
+      context: .
+      dockerfile: ./Dockerfile
+    env_file:
+      - ./environment/.env.dev
+    environment:
+      - REDIS_HOST=redis_main
+    command: sh -c `celery --broker=redis://:$${REDIS_PASSWORD}@$${REDIS_HOST}:$${REDIS_PORT}/0 flower --port=5001`
     volumes:
       - .:/app
     ports:
@@ -33,6 +61,9 @@ services:
     depends_on:
       - db_main
       - redis_main
+      - celery
+      - celery_2
+
 
   db_test:
     image: postgres
@@ -40,13 +71,5 @@ services:
       - ./environment/.env.test
     ports:
       - "5435:5435"
-  redis_test:
-    image: redis:alpine
-    restart: always
-    command: /bin/sh -c "redis-server --requirepass $$REDIS_PASSWORD --port $$REDIS_PORT"
-    env_file:
-      - ./environment/.env.test
-    ports:
-      - "6380:6380"
 volumes:
   db_main:
