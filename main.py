@@ -7,8 +7,6 @@ from db.setup import Base, engine
 from routers.users import user_router
 from models.users import User
 
-Base.metadata.create_all(engine)
-
 app = FastAPI(docs_url=None, redoc_url=None, openapi_url=None)
 app.include_router(user_router)
 
