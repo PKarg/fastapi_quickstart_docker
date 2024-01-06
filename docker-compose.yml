@@ -17,7 +17,7 @@ services:
       - ./environment/.env.dev
     ports:
       - "6379:6379"
-  celery:
+  worker:
     build:
       context: .
       dockerfile: ./Dockerfile
@@ -31,20 +31,7 @@ services:
     depends_on:
       - db_main
       - redis_main
-  celery_2:
-    build:
-      context: .
-      dockerfile: ./Dockerfile
-    env_file:
-      - ./environment/.env.dev
-    environment:
-      - REDIS_HOST=redis_main
-    command: celery -A celery_tasks.worker2 worker --loglevel=info
-    volumes:
-      - .:/app
-    depends_on:
-      - db_main
-      - redis_main
+
   flower:
     build:
       context: .
@@ -58,11 +45,16 @@ services:
       - .:/app
     ports:
       - "5001:5001"
+    healthcheck:
+      test: sh -c `celery inspect ping -A celery_tasks.worker && celery inspect ping -A celery_tasks.worker2`
+      interval: 10s
+      timeout: 10s
+      retries: 3
+      start_period: 5s
     depends_on:
       - db_main
       - redis_main
-      - celery
-      - celery_2
+      - worker
 
 
   db_test:
