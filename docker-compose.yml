@@ -45,12 +45,6 @@ services:
       - .:/app
     ports:
       - "5001:5001"
-    healthcheck:
-      test: sh -c `celery inspect ping -A celery_tasks.worker && celery inspect ping -A celery_tasks.worker2`
-      interval: 10s
-      timeout: 10s
-      retries: 3
-      start_period: 5s
     depends_on:
       - db_main
       - redis_main
