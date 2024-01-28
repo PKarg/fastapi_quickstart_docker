@@ -3,16 +3,17 @@ from datetime import datetime
 from pydantic import ValidationError
 from schemas.users import UserBaseSchema, UserCreateSchema, UserCreateSchemaHashed, UserFilterSchema
 
+valid_data = {
+    "username": "testuser",
+    "email_address": "testuser@dev.com",
+    "status": 1,
+    "auth_level": 0,
+    "identifier": "test123"
+}
+
 
 def test_user_base_schema():
     # Test with valid data
-    valid_data = {
-        "username": "testuser",
-        "email_address": "testuser@dev.com",
-        "status": 1,
-        "auth_level": 0,
-        "identifier": "test123"
-    }
     user = UserBaseSchema(**valid_data)
     assert user
 
@@ -31,14 +32,7 @@ def test_user_base_schema():
 
 def test_user_create_schema():
     # Test with valid data
-    valid_data = {
-        "username": "testuser",
-        "email_address": "testuser@dev.com",
-        "raw_password": "password123",
-        "status": 1,
-        "auth_level": 0,
-        "identifier": "test123"
-    }
+    valid_data["raw_password"] = "password123"
     user = UserCreateSchema(**valid_data)
     assert user
 
@@ -49,14 +43,7 @@ def test_user_create_schema():
 
 def test_user_create_schema_hashed():
     # Test with valid data
-    valid_data = {
-        "username": "testuser",
-        "email_address": "testuser@dev.com",
-        "hashed_password": "yxz" * 12,
-        "status": 1,
-        "auth_level": 0,
-        "identifier": "test123"
-    }
+    valid_data["hashed_password"] = "yxz" * 12
     user = UserCreateSchemaHashed(**valid_data)
     assert user
 
