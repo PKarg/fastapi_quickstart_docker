@@ -2,10 +2,8 @@ import datetime
 from typing import Optional
 
 from email_validator import validate_email
-from pydantic import BaseModel, field_validator, model_validator, Field, ConfigDict
+from pydantic import BaseModel, field_validator, model_validator, Field, ConfigDict, Extra
 
-
-# TODO user updating should be implemented separately
 
 class UserBaseSchema(BaseModel):
     username: str = Field(description="User username.", max_length=30, min_length=5)
@@ -29,13 +27,13 @@ class UserCreateSchema(UserBaseSchema):
 
 
 class UserCreateSchemaHashed(UserBaseSchema):
-    model_config = ConfigDict(extra="ignore")
+    model_config = ConfigDict(extra=Extra.ignore)
 
     hashed_password: str = Field(max_length=128, min_length=32)
 
 
 class UserFilterSchema(BaseModel):
-    model_config = ConfigDict(extra="ignore")
+    model_config = ConfigDict(extra=Extra.ignore)
 
     id: Optional[int] = Field(None, description="User ID.", ge=1)
     name: Optional[str] = Field(None, description="User username.", max_length=30, min_length=5)
