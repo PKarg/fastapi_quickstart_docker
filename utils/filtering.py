@@ -3,7 +3,7 @@ import logging
 from inspect import signature
 from typing import List, Optional
 
-from pydantic import BaseModel, ConfigDict
+from pydantic import BaseModel, ConfigDict, Extra
 from sqlalchemy import func, Select, inspect
 
 from db.setup import Base, get_model_registry
@@ -57,13 +57,13 @@ def get_field_from_model(model: Base, field: str):
 
 
 class BaseFilterSchema(BaseModel):
-    model_config = ConfigDict(extra="ignore")
+    model_config = ConfigDict(extra=Extra.ignore)
 
 
 class FilterJsonSchema(BaseModel):
     field: str
-    op: Optional[str]
-    value: Optional[str | bool]
+    op: Optional[str] = None
+    value: Optional[str | bool] = None
 
 
 def get_json_filters(filters: Optional[str] = None):
